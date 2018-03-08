@@ -30,7 +30,8 @@ public class WriteAvroExample {
 
         KStream<String, Person> output = textLines.mapValues((value -> new Person(value,(long)value.length())));
 
-        output.peek((key, value) -> System.out.println("key: " + key + ", value: " + value));
+        output.peek((key, value) -> System.out.println("key: {" + key + "}, value: {" + value + "}"));
+        System.out.println("Peeking function done.");
         output.to(OUTPUT_TOPIC);
 
         KafkaStreams stream = new KafkaStreams(builder.build(),config);
