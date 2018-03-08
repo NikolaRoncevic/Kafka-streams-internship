@@ -5,7 +5,6 @@ import org.apache.kafka.streams.Consumed;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
-import org.apache.kafka.streams.kstream.ForeachAction;
 import org.apache.kafka.streams.kstream.KStream;
 
 import java.util.Properties;
@@ -30,7 +29,8 @@ public class WriteAvroExample {
 
         KStream<String, Person> output = textLines.mapValues((value -> new Person(value,(long)value.length())));
 
-        output.peek((key, value) -> System.out.println("key: " + key + ", value: " + value));
+        output.peek((key, value) -> System.out.println("Record key: [" + key + "], value: [" + value + "]"));
+        System.out.println("Peeking done.");
         output.to(OUTPUT_TOPIC);
 
         KafkaStreams stream = new KafkaStreams(builder.build(),config);
